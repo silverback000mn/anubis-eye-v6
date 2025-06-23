@@ -1,0 +1,16 @@
+import json
+
+def salvar_conta(info):
+    with open("dados/contas.json", "r+") as f:
+        dados = json.load(f)
+        dados["contas"].append(info)
+        f.seek(0)
+        json.dump(dados, f, indent=4)
+
+# Exemplo de chamada:
+salvar_conta({
+    "usuario": "exemplo_ia",
+    "bio": "🌍 Designer | Explorando o mundo criativamente",
+    "qualidade": "Alta",
+    "interacoes": 6
+})
