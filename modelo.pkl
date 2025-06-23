@@ -1,0 +1,7 @@
+import pickle
+
+with open("dados/modelo.pkl", "rb") as f:
+    modelo = pickle.load(f)
+
+pred = modelo.predict([[1, 10, 5]])  # bio presente, 10 fotos, 5 interações
+print(f"Classificação: {pred[0]}")
