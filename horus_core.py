@@ -11,6 +11,7 @@ class HorusCore:
     def pensar(self):
         self.log("[HORUS] 👁️ IA Suprema iniciada")
         while True:
+            self.verificar_fila()
             if self.erros_recebidos:
                 origem = self.erros_recebidos.pop(0)
                 self.log(f"[HORUS] ⚠️ Erro crítico detectado de: {origem}")
@@ -20,9 +21,13 @@ class HorusCore:
                 self.log("[HORUS] ✅ Sistema estável...")
             time.sleep(10)
 
-    def receber_alerta(self, modulo):
-        self.erros_recebidos.append(modulo)
-        self.log(f"[HORUS] 📡 Alerta recebido de {modulo}")
+    def verificar_fila(self):
+        fila_path = "logs/supremos/horus_queue.txt"
+        if os.path.exists(fila_path):
+            with open(fila_path, "r") as f:
+                linhas = f.readlines()
+            self.erros_recebidos += [linha.strip() for linha in linhas]
+            open(fila_path, "w").close()
 
     def tentar_corrigir(self, modulo):
         self.log(f"[HORUS] 🧪 Tentando resolver falha de {modulo}...")
@@ -35,7 +40,7 @@ class HorusCore:
         return False
 
     def encaminhar_conselho(self, modulo):
-        self.log(f"[HORUS] 🧠 Encaminhando falha de {modulo} para o Conselho de IAs...")
+        self.log(f"[HORUS] 🧠 Escalando falha de {modulo} ao Conselho de IAs...")
         votos = [random.choice(["ajustar", "guardar", "enviar_admin"]) for _ in range(20)]
         resumo = f"[CONSELHO] 🗳️ Votos: {votos.count('ajustar')} ajustar, {votos.count('guardar')} guardar, {votos.count('enviar_admin')} enviar_admin"
         self.log(resumo)
@@ -49,3 +54,7 @@ class HorusCore:
         with open(self.log_path, "a") as f:
             f.write(f"{timestamp} {texto}\n")
         print(f"{timestamp} {texto}")
+
+if __name__ == "__main__":
+    HorusCore().pensar()
+
