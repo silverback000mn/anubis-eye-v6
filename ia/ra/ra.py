@@ -1,7 +1,7 @@
 import time
 import random
 
-class IA_Ra:
+class IA_RA:
     def __init__(self):
         self.erros_consecutivos = 0
         self.max_erro = 3
@@ -15,6 +15,7 @@ class IA_Ra:
                 if self.erros_consecutivos >= self.max_erro:
                     if not self.resolver():
                         self.solicitar_guardia()
+                        self.enviar_alerta_para_horus("IA_RA")
             else:
                 self.erros_consecutivos = 0
                 print("[IA_RA] ✅ Ação bem sucedida")
@@ -36,3 +37,11 @@ class IA_Ra:
 
     def solicitar_guardia(self):
         print("[IA_RA] Chamando Guardiã...")
+
+    def enviar_alerta_para_horus(self, modulo):
+        with open("logs/supremos/horus_queue.txt", "a") as f:
+            f.write(f"{modulo}\n")
+
+if __name__ == "__main__":
+    IA_RA().pensar()
+
