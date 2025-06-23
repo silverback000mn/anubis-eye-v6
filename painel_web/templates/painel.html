@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Anubis Eye – Painel</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { margin: 0; background: #000; color: #fff; font-family: sans-serif }
+    header { background: #111; color: #D4AF37; padding: 10px; text-align: center }
+    .logs { padding: 20px; max-height: 60vh; overflow-y: scroll }
+    .log { margin: 5px 0; padding: 5px; border-left: 4px solid #333; background: #111 }
+    .success { border-color: #28a745; } .warn { border-color: #ffc107; }
+    .error { border-color: #dc3545; } .info { border-color: #17a2b8; }
+  </style>
+</head>
+<body>
+
+<header>👁️ Anubis Eye – Painel da IA Suprema</header>
+
+<canvas id="graficoFalhas"></canvas>
+<div class="logs">
+  {% for linha in logs %}
+    {% set tipo = "info" %}
+    {% if "✅" in linha %} {% set tipo = "success" %}
+    {% elif "⚠️" in linha %} {% set tipo = "warn" %}
+    {% elif "❌" in linha or "falha" in linha.lower() %} {% set tipo = "error" %}
+    {% endif %}
+    <div class="log {{ tipo }}">{{ linha }}</div>
+  {% endfor %}
+</div>
+
+<script>
+const ctx = document.getElementById('graficoFalhas').getContext('2d');
+const data = {
+  labels: ["RA", "Isis", "Sauron", "Tempo"],
+  datasets: [{
+    label: "Falhas recentes",
+    data: [4, 2, 3, 1], // Simulado — pode ser conectado via Flask
+    backgroundColor: ["#ff4d4d", "#ff884d", "#ffc107", "#6c757d"]
+  }]
+};
+new Chart(ctx, { type: 'bar', data });
+</script>
+
+</body>
+</html>
