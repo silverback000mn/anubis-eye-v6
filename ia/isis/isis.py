@@ -1,0 +1,38 @@
+import time
+import random
+
+class IA_Isis:
+    def __init__(self):
+        self.erros_consecutivos = 0
+        self.max_erro = 3
+
+    def pensar(self):
+        print("[IA_Isis] Pensando com inteligência adaptativa")
+        while True:
+            if self.simular_acao() == "erro":
+                self.erros_consecutivos += 1
+                print(f"[IA_Isis] ❌ Erro #{self.erros_consecutivos}")
+                if self.erros_consecutivos >= self.max_erro:
+                    if not self.resolver():
+                        self.solicitar_guardia()
+            else:
+                self.erros_consecutivos = 0
+                print("[IA_Isis] ✅ Ação bem sucedida")
+            time.sleep(5)
+
+    def simular_acao(self):
+        return "erro" if random.random() < 0.3 else "sucesso"
+
+    def resolver(self):
+        print("[IA_Isis] Tentando estratégias alternativas...")
+        for i in range(5):
+            time.sleep(1)
+            if random.random() > 0.5:
+                print(f"[IA_Isis] Estratégia #{i+1} funcionou!")
+                self.erros_consecutivos = 0
+                return True
+        print("[IA_Isis] Nenhuma estratégia resolveu.")
+        return False
+
+    def solicitar_guardia(self):
+        print("[IA_Isis] Chamando Guardiã...")
