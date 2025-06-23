@@ -1,0 +1,24 @@
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+import pickle
+
+# Dados fictícios de treino
+dados = {
+    "bio": [1, 1, 0, 1, 0, 1, 1, 0],
+    "fotos": [12, 10, 5, 9, 3, 11, 8, 2],
+    "interacoes": [6, 5, 1, 4, 0, 5, 3, 1],
+    "qualidade": ["Alta", "Alta", "Baixa", "Média", "Baixa", "Alta", "Média", "Baixa"]
+}
+
+df = pd.DataFrame(dados)
+X = df[["bio", "fotos", "interacoes"]]
+y = df["qualidade"]
+
+modelo = RandomForestClassifier(n_estimators=100, random_state=42)
+modelo.fit(X, y)
+
+# Salvar modelo treinado
+with open("dados/modelo.pkl", "wb") as f:
+    pickle.dump(modelo, f)
+
+print("[IA] ✅ Modelo salvo como dados/modelo.pkl")
