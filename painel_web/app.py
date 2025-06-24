@@ -39,11 +39,9 @@ def painel():
     }
 
     todas_contas = {}
-
     for titulo, pasta in categorias.items():
         caminho = f"contas/{pasta}"
         lista = []
-
         if os.path.exists(caminho):
             for arquivo in os.listdir(caminho):
                 if arquivo.endswith(".json"):
@@ -55,7 +53,16 @@ def painel():
                             continue
         todas_contas[titulo] = lista
 
-    return render_template("painel.html", status=status_list, todas_contas=todas_contas)
+    # CONSELHO
+    conselho_feedback = []
+    try:
+        with open("dados/conselho_feedback.json", "r") as f:
+            conselho_data = json.load(f)
+            conselho_feedback = conselho_data.get("sugestoes", [])
+    except:
+        pass
+
+    return render_template("painel.html", status=status_list, todas_contas=todas_contas, conselho=conselho_feedback)
 
 @app.route("/nova_conta_via_painel", methods=["POST"])
 def nova_conta_via_painel():
