@@ -1,7 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 import os
 import json
 from datetime import datetime
+from faker import Faker
+import uuid
 
 app = Flask(__name__)
 
@@ -54,6 +56,36 @@ def painel():
         todas_contas[titulo] = lista
 
     return render_template("painel.html", status=status_list, todas_contas=todas_contas)
+
+@app.route("/nova_conta_via_painel", methods=["POST"])
+def nova_conta_via_painel():
+    usuario = request.form.get("usuario")
+    email = request.form.get("email")
+    senha = request.form.get("senha")
+    classificacao = request.form.get("classificacao")
+
+    if not usuario or not email or not senha or not classificacao:
+        return "Erro: preencha todos os campos.", 400
+
+    fake = Faker("pt_BR")
+    bio = fake.catch_phrase() + " — " + fake.job()
+
+    conta = {
+        "usuario": usuario,
+        "email": email,
+        "senha": senha,
+        "bio": bio,
+        "classificacao": classificacao
+    }
+
+    pasta_destino = f"contas/{classificacao}s"
+    os.makedirs(pasta_destino, exist_ok=True)
+    caminho = os.path.join(pasta_destino, f"{uuid.uuid4()}.json")
+
+    with open(caminho, "w") as f:
+        json.dump(conta, f, indent=4, ensure_ascii=False)
+
+    return redirect("/painel")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
