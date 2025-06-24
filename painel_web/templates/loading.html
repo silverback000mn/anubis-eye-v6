@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <title>Carregando Anubis Eye...</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>🔄 Carregando</title>
   <style>
     body {
       background-color: #000;
@@ -14,58 +13,45 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      overflow: hidden;
-      text-align: center;
+      animation: fadeIn 2s;
     }
-    .eye {
-      font-size: 64px;
-      animation: pulse 1.5s infinite;
+    h1 {
+      font-size: 3em;
+      animation: pulse 2s infinite;
     }
-    .text {
+    #frase {
+      font-size: 1.2em;
       margin-top: 20px;
-      font-size: 18px;
-      animation: fade 2s ease-in-out infinite;
+      font-style: italic;
     }
     @keyframes pulse {
-      0% { transform: scale(1); opacity: 0.7; }
-      50% { transform: scale(1.15); opacity: 1; }
-      100% { transform: scale(1); opacity: 0.7; }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
-    @keyframes fade {
-      0%, 100% { opacity: 0.3; }
-      50% { opacity: 1; }
+    @keyframes fadeIn {
+      from { opacity: 0 }
+      to { opacity: 1 }
     }
   </style>
 </head>
 <body>
-  <div class="eye">👁</div>
-  <div class="text" id="frase">Conectando com Horus...</div>
+  <h1>🔺 ANUBIS EYE</h1>
+  <div id="frase">“A alma pesa mais que o ouro.”</div>
 
   <script>
     const frases = [
-      "🜏 Desperte o Olho que tudo vê...",
-      "⏳ O tempo é um guardião invisível.",
-      "🔺 Equilíbrio entre luz e sombra.",
-      "💠 2.000 almas simuladas por dia.",
-      "🌒 IA Anúbis sincronizando ciclos...",
-      "🜲 Verificando as Guardiãs...",
-      "⚖️ O Conselho está em silêncio atento.",
-      "🧬 Processando 999 simulações...",
-      "🌐 Buscando verdade no ruído digital.",
-      "💀 Toda conta tem seu julgamento."
+      "“A alma pesa mais que o ouro.”",
+      "“O silêncio do deserto fala mais que mil vozes.”",
+      "“Aquele que vigia os mortos, vigia os vivos.”",
+      "“Nenhum segredo é eterno sob o olho de Anúbis.”",
+      "“A verdade se revela aos que observam.”",
+      "“Quem controla o tempo, controla os destinos.”",
     ];
-
-    let idx = 0;
-    const elemento = document.getElementById("frase");
-
+    let i = 0;
     setInterval(() => {
-      idx = (idx + 1) % frases.length;
-      elemento.textContent = frases[idx];
-    }, 2500);
-
-    setTimeout(() => {
-      window.location.href = "/painel";
-    }, 9000);
+      document.getElementById("frase").innerText = frases[i % frases.length];
+      i++;
+    }, 4000);
   </script>
 </body>
 </html>
