@@ -32,3 +32,7 @@ def painel():
         return render_template("painel.html")
     else:
         return "Código incorreto", 403
+
+# ⬇️ ESSA PARTE É FUNDAMENTAL para rodar no Render
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
