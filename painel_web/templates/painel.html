@@ -66,7 +66,19 @@
   {% endfor %}
 
 </body>
-</html>
+</html<div class="card">
+  <h2>🧠 Recomendações do Conselho IA</h2>
+  {% for item in conselho %}
+    <div style="margin-bottom: 15px; border-left: 4px solid {% if item.urgencia == 'alta' %}red{% elif item.urgencia == 'média' %}orange{% else %}green{% endif %}; padding-left: 10px;">
+      <strong>{{ item.ia }}</strong> — <em>{{ item.urgencia|capitalize }}</em><br>
+      <small>{{ item.data }}</small><br>
+      {{ item.acao }}
+    </div>
+  {% else %}
+    <p>Nenhuma sugestão registrada.</p>
+  {% endfor %}
+</div>
+
 <div class="card">
   <h2>➕ Criar Nova Conta Manual</h2>
   <form method="POST" action="/nova_conta_via_painel">
