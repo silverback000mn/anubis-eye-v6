@@ -1,6 +1,47 @@
-<form method="POST">
-  <h1>Login</h1>
-  <input name="usuario" placeholder="Usuário">
-  <input name="senha" type="password" placeholder="Senha">
-  <button type="submit">Entrar</button>
-</form>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Anubis Eye — Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #000;
+      color: #D4AF37;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    input {
+      margin: 8px;
+      padding: 10px;
+      background: #111;
+      border: 1px solid #D4AF37;
+      color: #fff;
+    }
+    button {
+      background-color: #D4AF37;
+      color: #000;
+      font-weight: bold;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background-color: #fff;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <h1>👁 Anubis Eye</h1>
+  <form method="POST" action="/verificar">
+    <input name="usuario" placeholder="Usuário" required><br>
+    <input type="password" name="senha" placeholder="Senha" required><br>
+    <button type="submit">Entrar</button>
+  </form>
+</body>
+</html>
