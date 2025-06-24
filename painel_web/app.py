@@ -46,4 +46,34 @@ def logs():
         return render_template("logs.html", logs=dados["logs"])
     except:
         return "Arquivo de logs não encontrado ou mal formatado.", 500
+import os
+
+@app.route("/contas")
+def contas():
+    base_dir = "contas"
+    categorias = {
+        "Contas Altas": "altas",
+        "Contas Médias": "medias",
+        "Contas Baixas": "baixas",
+        "Contas Travadas": "crashou"
+    }
+
+    todas_contas = {}
+
+    for nome, pasta in categorias.items():
+        caminho = os.path.join(base_dir, pasta)
+        lista = []
+
+        if os.path.exists(caminho):
+            for arquivo in os.listdir(caminho):
+                if arquivo.endswith(".json"):
+                    with open(os.path.join(caminho, arquivo), "r") as f:
+                        try:
+                            dados = json.load(f)
+                            lista.append(dados)
+                        except:
+                            continue
+        todas_contas[nome] = lista
+
+    return render_template("contas.html", todas_contas=todas_contas)
 
