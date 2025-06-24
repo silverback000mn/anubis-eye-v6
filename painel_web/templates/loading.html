@@ -15,6 +15,7 @@
       justify-content: center;
       height: 100vh;
       overflow: hidden;
+      text-align: center;
     }
     .eye {
       font-size: 64px;
@@ -27,7 +28,7 @@
     }
     @keyframes pulse {
       0% { transform: scale(1); opacity: 0.7; }
-      50% { transform: scale(1.2); opacity: 1; }
+      50% { transform: scale(1.15); opacity: 1; }
       100% { transform: scale(1); opacity: 0.7; }
     }
     @keyframes fade {
@@ -38,12 +39,33 @@
 </head>
 <body>
   <div class="eye">👁</div>
-  <div class="text">Carregando módulo central Horus...</div>
+  <div class="text" id="frase">Conectando com Horus...</div>
 
   <script>
+    const frases = [
+      "🜏 Desperte o Olho que tudo vê...",
+      "⏳ O tempo é um guardião invisível.",
+      "🔺 Equilíbrio entre luz e sombra.",
+      "💠 2.000 almas simuladas por dia.",
+      "🌒 IA Anúbis sincronizando ciclos...",
+      "🜲 Verificando as Guardiãs...",
+      "⚖️ O Conselho está em silêncio atento.",
+      "🧬 Processando 999 simulações...",
+      "🌐 Buscando verdade no ruído digital.",
+      "💀 Toda conta tem seu julgamento."
+    ];
+
+    let idx = 0;
+    const elemento = document.getElementById("frase");
+
+    setInterval(() => {
+      idx = (idx + 1) % frases.length;
+      elemento.textContent = frases[idx];
+    }, 2500);
+
     setTimeout(() => {
       window.location.href = "/painel";
-    }, 2500);
+    }, 9000);
   </script>
 </body>
 </html>
