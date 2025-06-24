@@ -36,3 +36,14 @@ def painel():
 # ⬇️ ESSA PARTE É FUNDAMENTAL para rodar no Render
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+    import json
+
+@app.route("/logs")
+def logs():
+    try:
+        with open("logs/sistema_logs.json", "r") as f:
+            dados = json.load(f)
+        return render_template("logs.html", logs=dados["logs"])
+    except:
+        return "Arquivo de logs não encontrado ou mal formatado.", 500
+
