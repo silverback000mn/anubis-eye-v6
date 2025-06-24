@@ -2,7 +2,6 @@ import threading
 import subprocess
 import time
 import os
-from utils.sync_contas import sincronizar_contas
 
 def iniciar_ia(nome, path):
     def run():
@@ -16,23 +15,31 @@ def iniciar_ia(nome, path):
     return run
 
 if __name__ == "__main__":
-    # 🔁 Sincronizar contas criadas manualmente para fila real
-    sincronizar_contas()
+    threads = []
 
-    threads = [
-        threading.Thread(target=iniciar_ia("IA_RA", "ia/ra/ra.py")),
-        threading.Thread(target=iniciar_ia("IA_Isis", "ia/isis/isis.py")),
-        threading.Thread(target=iniciar_ia("IA_Sauron", "ia/sauron/sauron.py")),
-        threading.Thread(target=iniciar_ia("IA_Tempo", "ia/tempo/tempo.py")),
-        threading.Thread(target=iniciar_ia("HORUS", "horus_core.py")),
-        threading.Thread(target=iniciar_ia("Watchdog", "watchdog.py")),
-        threading.Thread(target=iniciar_ia("Painel", "painel_web/app.py")),
-    ]
+    # INICIAR TODAS AS IAs
+    threads.append(threading.Thread(target=iniciar_ia("IA_RA", "ia/ra/ra.py")))
+    threads.append(threading.Thread(target=iniciar_ia("IA_Isis", "ia/isis/isis.py")))
+    threads.append(threading.Thread(target=iniciar_ia("IA_Sauron", "ia/sauron/sauron.py")))
+    threads.append(threading.Thread(target=iniciar_ia("IA_Tempo", "ia/tempo/tempo.py")))
+    
+    # PAINEL WEB
+    threads.append(threading.Thread(target=iniciar_ia("Painel", "painel_web/app.py")))
 
+    # HORUS (IA Suprema)
+    threads.append(threading.Thread(target=iniciar_ia("HORUS", "horus_core.py")))
+
+    # WATCHDOG
+    threads.append(threading.Thread(target=iniciar_ia("Watchdog", "watchdog.py")))
+
+    # STATUS SYNC (verifica quais IAs estão ativas)
+    threads.append(threading.Thread(target=iniciar_ia("StatusSync", "utils/status_sync.py")))
+
+    # Inicia todas as threads
     for t in threads:
         t.daemon = True
         t.start()
 
-    print("✅ Sistema Anubis Eye iniciado. Pressione Ctrl+C para parar.")
+    print("✅ Anubis Eye iniciado. Pressione Ctrl+C para parar.")
     while True:
         time.sleep(60)
