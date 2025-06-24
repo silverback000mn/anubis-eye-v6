@@ -67,3 +67,19 @@
 
 </body>
 </html>
+<div class="card">
+  <h2>➕ Criar Nova Conta Manual</h2>
+  <form method="POST" action="/nova_conta_via_painel">
+    <input type="text" name="usuario" placeholder="Nome de usuário" required />
+    <input type="email" name="email" placeholder="E-mail" required />
+    <input type="text" name="senha" placeholder="Senha" required />
+    <select name="classificacao" required>
+      <option value="">Classificação</option>
+      <option value="alta">Alta</option>
+      <option value="media">Média</option>
+      <option value="baixa">Baixa</option>
+      <option value="crashou">Travada</option>
+    </select>
+    <button type="submit">Criar Conta</button>
+  </form>
+</div>
