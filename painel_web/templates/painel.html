@@ -1,46 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Anubis Eye – Painel</title>
+  <meta charset="UTF-8" />
+  <title>Anubis Eye - Painel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body { margin: 0; background: #000; color: #fff; font-family: sans-serif }
-    header { background: #111; color: #D4AF37; padding: 10px; text-align: center }
-    .logs { padding: 20px; max-height: 60vh; overflow-y: scroll }
-    .log { margin: 5px 0; padding: 5px; border-left: 4px solid #333; background: #111 }
-    .success { border-color: #28a745; } .warn { border-color: #ffc107; }
-    .error { border-color: #dc3545; } .info { border-color: #17a2b8; }
+    body {
+      background-color: #000;
+      color: #D4AF37;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .card {
+      background: #111;
+      border: 1px solid #D4AF37;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+      transition: 0.3s;
+    }
+    .card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 10px #D4AF37;
+    }
+    canvas {
+      background-color: #111;
+      border-radius: 12px;
+    }
   </style>
 </head>
 <body>
+  <h1>👁 Painel Anubis Eye</h1>
+  <div class="card">
+    <h3>Status do Sistema</h3>
+    <ul>
+      <li>IA_RA: 🟢 Ativa</li>
+      <li>IA_Isis: 🟢 Ativa</li>
+      <li>IA_Sauron: 🟡 Aguardando</li>
+      <li>IA_Tempo: 🔴 Travada</li>
+    </ul>
+  </div>
 
-<header>👁️ Anubis Eye – Painel da IA Suprema</header>
+  <div class="card">
+    <h3>Contas Geradas por Dia</h3>
+    <canvas id="grafico" width="400" height="200"></canvas>
+  </div>
 
-<canvas id="graficoFalhas"></canvas>
-<div class="logs">
-  {% for linha in logs %}
-    {% set tipo = "info" %}
-    {% if "✅" in linha %} {% set tipo = "success" %}
-    {% elif "⚠️" in linha %} {% set tipo = "warn" %}
-    {% elif "❌" in linha or "falha" in linha.lower() %} {% set tipo = "error" %}
-    {% endif %}
-    <div class="log {{ tipo }}">{{ linha }}</div>
-  {% endfor %}
-</div>
-
-<script>
-const ctx = document.getElementById('graficoFalhas').getContext('2d');
-const data = {
-  labels: ["RA", "Isis", "Sauron", "Tempo"],
-  datasets: [{
-    label: "Falhas recentes",
-    data: [4, 2, 3, 1], // Simulado — pode ser conectado via Flask
-    backgroundColor: ["#ff4d4d", "#ff884d", "#ffc107", "#6c757d"]
-  }]
-};
-new Chart(ctx, { type: 'bar', data });
-</script>
-
+  <script>
+    const ctx = document.getElementById('grafico').getContext('2d');
+    const grafico = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'],
+        datasets: [{
+          label: 'Contas Criadas',
+          data: [600, 1200, 800, 1800, 950],
+          backgroundColor: '#D4AF37'
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false }},
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+  </script>
 </body>
 </html>
