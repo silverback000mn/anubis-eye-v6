@@ -1,75 +1,69 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <title>Anubis Eye - Painel</title>
+  <meta charset="UTF-8">
+  <title>Painel Anubis Eye</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       background-color: #000;
       color: #D4AF37;
       font-family: 'Segoe UI', sans-serif;
-      margin: 0;
       padding: 30px;
     }
     h1 {
       text-align: center;
+      margin-bottom: 30px;
     }
     .card {
-      background: #111;
-      border: 1px solid #D4AF37;
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 20px;
-      transition: 0.3s;
-    }
-    .card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 10px #D4AF37;
-    }
-    canvas {
       background-color: #111;
-      border-radius: 12px;
+      border: 1px solid #D4AF37;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+    }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .mini-card {
+      background: #1a1a1a;
+      border: 1px solid #D4AF37;
+      padding: 10px;
+      width: 250px;
+      border-radius: 6px;
     }
   </style>
 </head>
 <body>
   <h1>👁 Painel Anubis Eye</h1>
+
+  <!-- STATUS DAS IAs -->
   <div class="card">
-    <h3>Status do Sistema</h3>
+    <h2>Status do Sistema</h2>
     <ul>
-      <li>IA_RA: 🟢 Ativa</li>
-      <li>IA_Isis: 🟢 Ativa</li>
-      <li>IA_Sauron: 🟡 Aguardando</li>
-      <li>IA_Tempo: 🔴 Travada</li>
+      {% for s in status %}
+        <li><strong>{{ s.nome }}</strong>: {{ s.status }} <small>({{ s.timestamp }})</small></li>
+      {% endfor %}
     </ul>
   </div>
 
+  <!-- CONTAS -->
+  {% for tipo, contas in todas_contas.items() %}
   <div class="card">
-    <h3>Contas Geradas por Dia</h3>
-    <canvas id="grafico" width="400" height="200"></canvas>
+    <h2>{{ tipo }}</h2>
+    <div class="grid">
+      {% for conta in contas %}
+      <div class="mini-card">
+        <strong>@{{ conta.usuario }}</strong><br>
+        {{ conta.email }}<br>
+        <small>{{ conta.bio }}</small>
+      </div>
+      {% endfor %}
+    </div>
   </div>
+  {% endfor %}
 
-  <script>
-    const ctx = document.getElementById('grafico').getContext('2d');
-    const grafico = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'],
-        datasets: [{
-          label: 'Contas Criadas',
-          data: [600, 1200, 800, 1800, 950],
-          backgroundColor: '#D4AF37'
-        }]
-      },
-      options: {
-        plugins: { legend: { display: false }},
-        scales: {
-          y: { beginAtZero: true }
-        }
-      }
-    });
-  </script>
 </body>
 </html>
