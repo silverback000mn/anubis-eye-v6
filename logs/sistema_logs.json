@@ -1,0 +1,16 @@
+{
+  "logs": [
+    {
+      "data": "24/06/2025 00:42",
+      "ia": "IA_RA",
+      "acao": "Criou Conta",
+      "resultado": "✅ Sucesso"
+    },
+    {
+      "data": "24/06/2025 00:43",
+      "ia": "IA_Tempo",
+      "acao": "Postar Foto",
+      "resultado": "❌ Timeout"
+    }
+  ]
+}
