@@ -1,53 +1,27 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>Nova Conta - Anubis Eye</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      background-color: #000;
-      color: #D4AF37;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 40px;
+@app.route("/nova_conta_via_painel", methods=["POST"])
+def nova_conta_via_painel():
+    usuario = request.form.get("usuario")
+    email = request.form.get("email")
+    senha = request.form.get("senha")
+    classificacao = request.form.get("classificacao")
+
+    if not usuario or not email or not senha or not classificacao:
+        return "Dados incompletos", 400
+
+    pasta = f"contas/{classificacao}"
+    os.makedirs(pasta, exist_ok=True)
+
+    conta = {
+        "usuario": usuario,
+        "email": email,
+        "senha": senha,
+        "classificacao": classificacao,
+        "data": datetime.now().strftime("%Y-%m-%d %H:%M")
     }
-    input, select {
-      display: block;
-      margin: 10px 0;
-      padding: 10px;
-      width: 100%;
-      background: #111;
-      color: #fff;
-      border: 1px solid #D4AF37;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #D4AF37;
-      color: #000;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:hover {
-      background: #fff;
-      color: #000;
-    }
-  </style>
-</head>
-<body>
-  <h1>➕ Nova Conta Manual</h1>
-  <form method="POST" action="/nova_conta">
-    <input type="text" name="usuario" placeholder="Nome de usuário" required />
-    <input type="email" name="email" placeholder="E-mail" required />
-    <input type="text" name="senha" placeholder="Senha" required />
-    <select name="classificacao" required>
-      <option value="">Classificação</option>
-      <option value="alta">Alta</option>
-      <option value="media">Média</option>
-      <option value="baixa">Baixa</option>
-      <option value="crashou">Travada</option>
-    </select>
-    <button type="submit">Criar Conta</button>
-  </form>
-</body>
-</html>
+
+    filename = f"{usuario}_{int(datetime.now().timestamp())}.json"
+    filepath = os.path.join(pasta, filename)
+    with open(filepath, "w") as f:
+        json.dump(conta, f, indent=4)
+
+    return redirect("/painel")
