@@ -35,7 +35,56 @@
       border-radius: 6px;
     }
   </style>
-</head>
+</head><script>
+function atualizarPainel() {
+  fetch("/api/status")
+    .then(res => res.json())
+    .then(status => {
+      const ul = document.querySelector(".card ul");
+      if (ul) {
+        ul.innerHTML = "";
+        status.forEach(s => {
+          ul.innerHTML += `
+            <li>
+              <strong>${s.nome}</strong> — ${s.status} <small>(${s.timestamp})</small>
+              <form method="POST" action="/controle_ia/${s.nome}/ativar" style="display:inline;"><button type="submit">Ativar</button></form>
+              <form method="POST" action="/controle_ia/${s.nome}/desativar" style="display:inline;"><button type="submit">Desativar</button></form>
+            </li>
+          `;
+        });
+      }
+    });
+
+  fetch("/api/conselho")
+    .then(res => res.json())
+    .then(conselho => {
+      const card = document.querySelector("div.card:last-of-type");
+      if (card) {
+        let html = `<h2>🧠 Recomendações do Conselho IA</h2>`;
+        if (conselho.length === 0) {
+          html += "<p>Nenhuma sugestão registrada.</p>";
+        } else {
+          conselho.forEach(item => {
+            const cor = item.urgencia === "alta" ? "red" : item.urgencia === "média" ? "orange" : "green";
+            html += `
+              <div style="margin-bottom: 15px; border-left: 4px solid ${cor}; padding-left: 10px;">
+                <strong>${item.ia}</strong> — <em>${item.urgencia}</em><br>
+                <small>${item.data}</small><br>
+                ${item.acao}
+              </div>
+            `;
+          });
+        }
+        card.innerHTML = html;
+      }
+    });
+
+  // Contas (opcional: pode ser incluído depois)
+}
+
+setInterval(atualizarPainel, 30000); // Atualiza a cada 30 segundos
+</script>
+
 <body>
   <h1>👁 Painel Anubis Eye</h1>
 
