@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Nova Conta - Anubis Eye</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #000;
+      color: #D4AF37;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 40px;
+    }
+    input, select {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+      background: #111;
+      color: #fff;
+      border: 1px solid #D4AF37;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #D4AF37;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #fff;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <h1>➕ Nova Conta Manual</h1>
+  <form method="POST" action="/nova_conta">
+    <input type="text" name="usuario" placeholder="Nome de usuário" required />
+    <input type="email" name="email" placeholder="E-mail" required />
+    <input type="text" name="senha" placeholder="Senha" required />
+    <select name="classificacao" required>
+      <option value="">Classificação</option>
+      <option value="alta">Alta</option>
+      <option value="media">Média</option>
+      <option value="baixa">Baixa</option>
+      <option value="crashou">Travada</option>
+    </select>
+    <button type="submit">Criar Conta</button>
+  </form>
+</body>
+</html>
