@@ -9,7 +9,7 @@ STATUS_DIR = "status"
 os.makedirs(STATUS_DIR, exist_ok=True)
 
 def ia_esta_rodando(nome):
-    for proc in psutil.process_iter(attrs=['pid', 'name', 'cmdline']):
+    for proc in psutil.process_iter(attrs=['cmdline']):
         try:
             if nome.lower() in " ".join(proc.info['cmdline']).lower():
                 return True
@@ -31,4 +31,4 @@ if __name__ == "__main__":
         for nome in IA_NOMES:
             ativa = ia_esta_rodando(nome)
             atualizar_status(nome, ativa)
-        time.sleep(5)  # Atualiza a cada 5 segundos
+        time.sleep(5)
