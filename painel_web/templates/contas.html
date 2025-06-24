@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Contas - Anubis Eye</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #000;
+      color: #D4AF37;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 30px;
+    }
+    h2 {
+      border-bottom: 1px solid #D4AF37;
+      margin-top: 40px;
+    }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .card {
+      background: #111;
+      border: 1px solid #D4AF37;
+      border-radius: 8px;
+      padding: 12px;
+      width: 280px;
+    }
+    .card:hover {
+      background: #1a1a1a;
+    }
+  </style>
+</head>
+<body>
+  <h1>👥 Contas do Sistema</h1>
+
+  {% for tipo, contas in todas_contas.items() %}
+    <h2>{{ tipo }}</h2>
+    <div class="grid">
+      {% for conta in contas %}
+      <div class="card">
+        <strong>@{{ conta.usuario }}</strong><br>
+        <small>{{ conta.email }}</small><br>
+        <p>{{ conta.bio }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</body>
+</html>
