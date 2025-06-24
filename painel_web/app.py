@@ -91,6 +91,60 @@ def nova_conta_via_painel():
 
     with open(caminho, "w") as f:
         json.dump(conta, f, indent=4, ensure_ascii=False)
+@app.route("/api/status")
+def api_status():
+    nomes_ias = ["IA_RA", "IA_Isis", "IA_Sauron", "IA_Tempo", "HORUS", "Watchdog"]
+    status_list = []
+
+    for nome in nomes_ias:
+        path = f"status/{nome}.status"
+        try:
+            with open(path, "r") as f:
+                data = json.load(f)
+        except:
+            data = {
+                "nome": nome,
+                "status": "🔴 Inativa",
+                "timestamp": "-"
+            }
+        status_list.append(data)
+    return json.dumps(status_list, ensure_ascii=False)
+
+
+@app.route("/api/conselho")
+def api_conselho():
+    try:
+        with open("dados/conselho_feedback.json", "r") as f:
+            conselho_data = json.load(f)
+            return json.dumps(conselho_data.get("sugestoes", []), ensure_ascii=False)
+    except:
+        return json.dumps([])
+
+
+@app.route("/api/contas")
+def api_contas():
+    categorias = {
+        "Contas Altas": "altas",
+        "Contas Médias": "medias",
+        "Contas Baixas": "baixas",
+        "Contas Travadas": "crashou"
+    }
+
+    todas_contas = {}
+    for titulo, pasta in categorias.items():
+        caminho = f"contas/{pasta}"
+        lista = []
+        if os.path.exists(caminho):
+            for arquivo in os.listdir(caminho):
+                if arquivo.endswith(".json"):
+                    with open(os.path.join(caminho, arquivo), "r") as f:
+                        try:
+                            conta = json.load(f)
+                            lista.append(conta)
+                        except:
+                            continue
+        todas_contas[titulo] = lista
+    return json.dumps(todas_contas, ensure_ascii=False)
 
     return redirect("/painel")
 
