@@ -1,0 +1,16 @@
+{
+  "sugestoes": [
+    {
+      "ia": "IA_RA",
+      "acao": "Aumentar o tempo de delay para evitar bloqueios",
+      "urgencia": "alta",
+      "data": "2025-06-24 10:15"
+    },
+    {
+      "ia": "IA_Tempo",
+      "acao": "Criar 2 novas sub-IAs para distribuir tarefas",
+      "urgencia": "média",
+      "data": "2025-06-24 09:50"
+    }
+  ]
+}
