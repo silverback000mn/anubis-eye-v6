@@ -1,19 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-  <meta charset="utf-8">
-  <title>Importar Contas</title>
+  <meta charset="UTF-8">
+  <title>📤 Importar Contas</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #D4AF37;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 50px;
+    }
+    textarea, select, button {
+      margin: 10px;
+      padding: 12px;
+      font-size: 14px;
+      width: 90%;
+      max-width: 600px;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #D4AF37;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    textarea {
+      height: 300px;
+      font-family: monospace;
+    }
+  </style>
 </head>
-<body style="background:#000;color:#D4AF37;font-family:sans-serif;padding:40px;">
-  <h1>📁 Inserir Contas Prontas</h1>
-  <form action="/importar_contas" method="POST">
-    <textarea name="dados" rows="15" cols="80" placeholder='Cole aqui uma lista JSON de contas'></textarea><br><br>
-    <select name="classificacao">
+<body>
+  <h1>📁 Colar Contas JSON</h1>
+  <form method="POST" action="/importar_contas">
+    <textarea name="dados" placeholder='[\n  {"usuario": "nome", "senha": "senha123", "email": "ex@a.com"}\n]'></textarea><br>
+    <select name="classificacao" required>
       <option value="alta">Alta</option>
       <option value="media">Média</option>
       <option value="baixa">Baixa</option>
       <option value="crashou">Travada</option>
-    </select>
+    </select><br>
     <button type="submit">Salvar Contas</button>
   </form>
 </body>
