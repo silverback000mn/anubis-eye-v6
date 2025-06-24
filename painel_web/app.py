@@ -76,4 +76,39 @@ def contas():
         todas_contas[nome] = lista
 
     return render_template("contas.html", todas_contas=todas_contas)
+from faker import Faker
+import uuid
+
+faker = Faker("pt_BR")
+
+@app.route("/nova_conta", methods=["GET", "POST"])
+def nova_conta():
+    if request.method == "GET":
+        return render_template("nova_conta.html")
+    
+    usuario = request.form.get("usuario")
+    email = request.form.get("email")
+    senha = request.form.get("senha")
+    classificacao = request.form.get("classificacao")
+
+    if not usuario or not email or not senha or not classificacao:
+        return "Campos obrigatórios faltando.", 400
+
+    bio = faker.catch_phrase() + " " + faker.job()
+    conta = {
+        "usuario": usuario,
+        "email": email,
+        "senha": senha,
+        "bio": bio,
+        "classificacao": classificacao
+    }
+
+    pasta_destino = f"contas/{classificacao}s"
+    os.makedirs(pasta_destino, exist_ok=True)
+    arquivo = os.path.join(pasta_destino, f"{uuid.uuid4()}.json")
+
+    with open(arquivo, "w") as f:
+        json.dump(conta, f, indent=4, ensure_ascii=False)
+
+    return f"✅ Conta criada com sucesso!<br><br><a href='/contas'>Ver contas</a>"
 
