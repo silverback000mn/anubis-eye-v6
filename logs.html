@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Logs Anubis Eye</title>
+  <title>Logs Reais - Anubis Eye</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -35,9 +35,14 @@
   <h1>📜 Logs do Sistema</h1>
   <table>
     <tr><th>Data</th><th>IA</th><th>Ação</th><th>Resultado</th></tr>
-    <tr><td>23/06</td><td>IA_RA</td><td>Criar Conta</td><td>✅ Sucesso</td></tr>
-    <tr><td>23/06</td><td>IA_Tempo</td><td>Postar Foto</td><td>❌ Timeout</td></tr>
-    <!-- Você pode gerar dinamicamente via Flask -->
+    {% for log in logs %}
+    <tr>
+      <td>{{ log.data }}</td>
+      <td>{{ log.ia }}</td>
+      <td>{{ log.acao }}</td>
+      <td>{{ log.resultado }}</td>
+    </tr>
+    {% endfor %}
   </table>
 </body>
 </html>
