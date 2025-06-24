@@ -1,0 +1,1 @@
+# Código do status_sync.py para monitoramento automático
