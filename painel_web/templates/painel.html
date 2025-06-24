@@ -2,145 +2,146 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Painel Anubis Eye</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚡ Painel Anubis Eye</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       background-color: #000;
-      color: #D4AF37;
+      color: #fff;
       font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+    }
+    header {
+      background: #111;
+      color: #D4AF37;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.6em;
+      font-weight: bold;
+    }
+    .tabs {
+      display: flex;
+      background: #1a1a1a;
+      border-bottom: 1px solid #D4AF37;
+    }
+    .tab {
+      padding: 14px 20px;
+      cursor: pointer;
+      flex: 1;
+      text-align: center;
+      border-right: 1px solid #333;
+      color: #D4AF37;
+    }
+    .tab:hover, .tab.active {
+      background: #000;
+      font-weight: bold;
+    }
+    .tab-content {
+      display: none;
       padding: 30px;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
+    .tab-content.active {
+      display: block;
     }
-    .card {
-      background-color: #111;
+    .box {
+      background: #111;
       border: 1px solid #D4AF37;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 25px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
     }
-    .grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
+    .box h3 {
+      color: #D4AF37;
+      margin-bottom: 10px;
     }
-    .mini-card {
-      background: #1a1a1a;
-      border: 1px solid #D4AF37;
+    .form-group input, .form-group select, .form-group button {
+      margin: 5px;
       padding: 10px;
-      width: 250px;
-      border-radius: 6px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .form-group input, .form-group select {
+      background: #222;
+      color: white;
+    }
+    .form-group button {
+      background-color: #D4AF37;
+      color: black;
+      cursor: pointer;
+      font-weight: bold;
     }
   </style>
-</head><script>
-function atualizarPainel() {
-  fetch("/api/status")
-    .then(res => res.json())
-    .then(status => {
-      const ul = document.querySelector(".card ul");
-      if (ul) {
-        ul.innerHTML = "";
-        status.forEach(s => {
-          ul.innerHTML += `
-            <li>
-              <strong>${s.nome}</strong> — ${s.status} <small>(${s.timestamp})</small>
-              <form method="POST" action="/controle_ia/${s.nome}/ativar" style="display:inline;"><button type="submit">Ativar</button></form>
-              <form method="POST" action="/controle_ia/${s.nome}/desativar" style="display:inline;"><button type="submit">Desativar</button></form>
-            </li>
-          `;
-        });
-      }
-    });
-
-  fetch("/api/conselho")
-    .then(res => res.json())
-    .then(conselho => {
-      const card = document.querySelector("div.card:last-of-type");
-      if (card) {
-        let html = `<h2>🧠 Recomendações do Conselho IA</h2>`;
-        if (conselho.length === 0) {
-          html += "<p>Nenhuma sugestão registrada.</p>";
-        } else {
-          conselho.forEach(item => {
-            const cor = item.urgencia === "alta" ? "red" : item.urgencia === "média" ? "orange" : "green";
-            html += `
-              <div style="margin-bottom: 15px; border-left: 4px solid ${cor}; padding-left: 10px;">
-                <strong>${item.ia}</strong> — <em>${item.urgencia}</em><br>
-                <small>${item.data}</small><br>
-                ${item.acao}
-              </div>
-            `;
-          });
-        }
-        card.innerHTML = html;
-      }
-    });
-
-  // Contas (opcional: pode ser incluído depois)
-}
-
-setInterval(atualizarPainel, 30000); // Atualiza a cada 30 segundos
-</script>
-
+</head>
 <body>
-  <h1>👁 Painel Anubis Eye</h1>
-
-  <!-- STATUS DAS IAs -->
-  <div class="card">
-    <h2>Status do Sistema</h2>
-    <ul>
-      {% for s in status %}
-        <li><strong>{{ s.nome }}</strong>: {{ s.status }} <small>({{ s.timestamp }})</small></li>
-      {% endfor %}
-    </ul>
+  <header>👁️ Painel Anubis Eye</header>
+  <div class="tabs">
+    <div class="tab active" onclick="mostrarTab('ia')">Inteligências</div>
+    <div class="tab" onclick="mostrarTab('contas')">Contas</div>
+    <div class="tab" onclick="mostrarTab('conselho')">Conselho</div>
   </div>
 
-  <!-- CONTAS -->
-  {% for tipo, contas in todas_contas.items() %}
-  <div class="card">
-    <h2>{{ tipo }}</h2>
-    <div class="grid">
-      {% for conta in contas %}
-      <div class="mini-card">
-        <strong>@{{ conta.usuario }}</strong><br>
-        {{ conta.email }}<br>
-        <small>{{ conta.bio }}</small>
-      </div>
+  <div class="tab-content active" id="ia">
+    <div class="box">
+      <h3>🔌 Status das IAs</h3>
+      <ul>
+        {% for ia in status %}
+          <li><strong>{{ ia.nome }}:</strong> {{ ia.status }} {% if ia.timestamp != '-' %} ({{ ia.timestamp }}) {% endif %}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="tab-content" id="contas">
+    <div class="box">
+      <h3>👥 Gerenciar Contas</h3>
+      {% for titulo, lista in todas_contas.items() %}
+        <div style="margin-bottom: 15px;">
+          <strong>{{ titulo }}</strong> — {{ lista|length }} contas
+        </div>
+      {% endfor %}
+
+      <form method="POST" action="/nova_conta_via_painel" class="form-group">
+        <input type="text" name="usuario" placeholder="Usuário" required>
+        <input type="email" name="email" placeholder="E-mail" required>
+        <input type="text" name="senha" placeholder="Senha" required>
+        <select name="classificacao">
+          <option value="alta">Alta</option>
+          <option value="media">Média</option>
+          <option value="baixa">Baixa</option>
+          <option value="crashou">Travada</option>
+        </select>
+        <button type="submit">Criar Conta</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="tab-content" id="conselho">
+    <div class="box">
+      <h3>🧠 Recomendações do Conselho</h3>
+      {% for item in conselho %}
+        <div style="margin-bottom: 15px;">
+          <strong>{{ item.modulo }}</strong> — <em>{{ item.nivel }}</em><br>
+          <small>{{ item.data }}</small><br>
+          {{ item.sugestao }}
+        </div>
       {% endfor %}
     </div>
   </div>
-  {% endfor %}
 
+  <script>
+    function mostrarTab(id) {
+      const tabs = document.querySelectorAll(".tab");
+      const contents = document.querySelectorAll(".tab-content");
+
+      tabs.forEach(t => t.classList.remove("active"));
+      contents.forEach(c => c.classList.remove("active"));
+
+      document.querySelector(`.tab[onclick*='${id}']`).classList.add("active");
+      document.getElementById(id).classList.add("active");
+    }
+  </script>
 </body>
-</html<div class="card">
-  <h2>🧠 Recomendações do Conselho IA</h2>
-  {% for item in conselho %}
-    <div style="margin-bottom: 15px; border-left: 4px solid {% if item.urgencia == 'alta' %}red{% elif item.urgencia == 'média' %}orange{% else %}green{% endif %}; padding-left: 10px;">
-      <strong>{{ item.ia }}</strong> — <em>{{ item.urgencia|capitalize }}</em><br>
-      <small>{{ item.data }}</small><br>
-      {{ item.acao }}
-    </div>
-  {% else %}
-    <p>Nenhuma sugestão registrada.</p>
-  {% endfor %}
-</div>
-
-<div class="card">
-  <h2>➕ Criar Nova Conta Manual</h2>
-  <form method="POST" action="/nova_conta_via_painel">
-    <input type="text" name="usuario" placeholder="Nome de usuário" required />
-    <input type="email" name="email" placeholder="E-mail" required />
-    <input type="text" name="senha" placeholder="Senha" required />
-    <select name="classificacao" required>
-      <option value="">Classificação</option>
-      <option value="alta">Alta</option>
-      <option value="media">Média</option>
-      <option value="baixa">Baixa</option>
-      <option value="crashou">Travada</option>
-    </select>
-    <button type="submit">Criar Conta</button>
-  </form>
-</div>
+</html>
